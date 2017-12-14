@@ -87,6 +87,32 @@ var AIMLInterpreter = function(botAttributesParam){
             setTimeout(findAnswerInLoadedAIMLFilesWrapper(clientInput, cb), 1000);
         }
     };
+
+    this.findAnswerInLoadedAIMLFilesSync = (clientInput) => {
+        //check if all AIML files have been loaded. If not return null and print error
+        if(isAIMLFileLoaded){
+            wildCardArray = [];
+            lastWildCardValue = '';
+            var result = '';
+            for(var i = 0; i < domArray.length; i++){
+                cleanDom(domArray[i].children);
+                result = findCorrectCategory(clientInput, domArray[i].children);
+                if(result){
+                    break;
+                }
+            }
+
+            if(result){
+                result = cleanStringFormatCharacters(result);
+                previousAnswer = result;
+            }
+            cb(result, wildCardArray, clientInput);
+            return {answer:result,wildCardArray:wildCardArray,clientInput:clientInput,error:null}
+        }
+        else{
+            return {answer:null,wildCardArray:null,clientInput:clientInput,error:"AIML files not loaded"}
+        }
+    };
     //restart the DOM in order to load a new AIML File
     this.restartDom = function(){
         domArray=[];
