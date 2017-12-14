@@ -106,7 +106,6 @@ var AIMLInterpreter = function(botAttributesParam){
                 result = cleanStringFormatCharacters(result);
                 previousAnswer = result;
             }
-            cb(result, wildCardArray, clientInput);
             return {answer:result,wildCardArray:wildCardArray,clientInput:clientInput,error:null}
         }
         else{
